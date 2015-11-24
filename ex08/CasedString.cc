@@ -1,9 +1,10 @@
-
+// Yufang Sun
+// 1334960
+// mandary@uw.edu
 
 #include "CasedString.h"
 #include <cstdlib>
 #include <string>
-
 #include <iostream>
 
 using std::cout;
@@ -32,10 +33,10 @@ CasedString::CasedString(const CasedString &other) {
 
 CasedString &CasedString::operator=(const CasedString &str) {
 	// self assignment protection
+	cout << "	Copy assign(" << *str.str_ << ")" <<endl;
 	if ( &str == this ) return *this;
 	if ( str_ != NULL ) delete str_;
 	str_ = new std::string(*str.str_);
-	cout << "	Copy assign(" << *str_ << ")" <<endl;
 	return *this;
 }
 
