@@ -1,0 +1,26 @@
+Declaring local and global variables in C is a way of allocating stack and 
+static data area memory, respectively.  The more variables you declare,
+the more space you're allocating.  However, as we've seen earlier, when
+you declare multiple variables C makes no promises at all about how 
+they are laid out in storage.  This is one of the uses of C structs.
+
+A C struct is a compound type -- a type that contains other types (including
+possibly other struct types).  For example,
+
+struct example_t {
+   int   id;
+   char  firstInitial;
+   char  secondInitial;
+} Example;
+
+declares a variable Example that has three fields, an int and two chars.
+Further, it's guaranteed that the layout of the struct has the int followed
+by the two chars.  (A complication is that the layout may add padding, unless
+you expicitly tell the compiler not to do that.)
+
+struct variables act just like normal scalar types, like ints, in terms of
+assignment: assigning one struct variable to a second, type compatible struct
+element is just a memory copy operation.  structs can be passed as arguments
+and returned as return values.
+
+

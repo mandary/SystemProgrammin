@@ -1,0 +1,137 @@
+Runtime resources / performance
+-------------------------------
+
+Between the hardware and you C program is the operating system.
+The operating system provides abstractions of resources that
+are more convenient, and safer, to use than the raw hardware.
+The C standard library (libc) may further abstract the OS-provided
+resources, so that your C program could be, in theory, portable
+across operating systems:
+
+  CPU -> the statements in your program
+  memory -> virtual address space 
+  disk -> files
+  network -> sockets (we didn't talk about this)
+  etc.
+
+There are roughly four things to think about in terms of runtime
+resources: your own code, libc (and other library) code, the OS 
+code, and the hardware resources (e.g., disks).
+
+There is overhead involved in communicating with each layer from
+your (application) code:
+
+  -> your own code:  a subroutine call [10's of instructions]
+  -> library code:   a subroutine call
+  -> OS code:        interrupt handling [1000's of instructions]
+  -> hardware        can be very, very slow [10^9's of instructions, say]
+
+There are two general approaches to dealing with these "boundary crossing
+overheads":
+
+1) Don't cross boundaries.  For example, if you're going to enter the OS
+to fetch some file data, fetch a lot of file data so you don't have to 
+enter the OS very often.
+
+2) Caching.  For example, if the OS is going to go to the disk to fetch
+some data, fetch a lot of data and cache it, even if the client application
+has asked for only, say, a single byte.
+
+(These are very related.  By #1 I mean that this is something the client 
+code decides to do, and by #2 I mean that this is something that the
+server code decides to do.  The OS is the server to libc, which is a client
+of the OS.  libc is the server to the app, which is the client to libc.)
+
+
+I/O, Caching, and Layering
+-----------------------------
+
+Because big fetches and caching are such good ideas,
+all the layers try to apply them:
+
+- The OS caches disk blocks (a fixed size chunk of bits
+on the disk)
+
+- libc caches chunks of individual files
+
+- The application may do its own caching of data.
+
+So, for instance, if the app asks for 1 byte of a file data from
+libc, libc might ask for 1000 bytes from the OS. The OS might
+fetch 4K bytes from disk, and return 1000 bytes to libc, which then
+returns a single byte to the user.
+
+
+C: File I/O
+-----------
+
+Standard C provides two file system interfaces.
+
+1) Streams
+   Streams are of type FILE*, and use calls like
+   fopen() and fread().  Stream data is buffered
+   by libc.
+
+2) File handles
+   File handles are int's, and use calls like
+   open() and read().  File handle operation
+   results are not buffered by libc.
+
+(See sections on 10-23 for more details.)
+
+
+Word Count App 
+--------------
+
+Word count counts characters, words, and lines in a
+(text) file.  There is a built-in word count command,
+wc.  We implement our own.
+
+We actually show six implementations.  They differ
+in how the code is structured, as well as in performance.
+If you fetch the code and get in the main directory for it,
+'make' will build all versions and 'make run' will run them
+and display their running times.
+
+The six versions are:
+
+0-mono:  All code is in main().  We sacrifice modularity for
+speed (or at least try to do that).  File data is read using
+fgetc(), a libc method that returns the next character in the
+file, and that buffers data it gets from the OS for performance.
+
+1-fgetc: Here we abstract out the idea of a file reader from
+the code that implements word count.  (See file_reader_extern.h.)
+Relative to 0-mono, this improvement in code structure imposes
+an extra procedure call per file character: main() invokes
+nextChar() in our file reader, which invokes libc's fgetc().
+
+2-read: Here we maintain the file reader abstraction from 1-fgetc,
+but change its implementation so that it (a) uses the unbuffered
+version of libc file I/O, and (b) fetches 4KB of data at a time
+into a buffer it maintains.  (Note that its public interface
+has only a nextChar() call.  The buffering is purely an implementation
+decision.)
+
+3-inline: Here we use the preprocessor to get rid of the procedure
+calls to nextChar() while maintaining the modularity -- the mainline
+source code is unchanged, only the file reader implementation changed.
+We #define the string 'nextChar' to expand into a block of code, so
+that what looks like a call to nextChar() is instead the injection
+of the code that implements nextChar() into the caller's source.
+
+4-class:  Here we implement the file reader in a more class oriented
+way, using the class implementation in C techniques we saw earlier.
+Again, this is an improvement in code modularity/structure.  All
+earlier versions of the code used globals to hold file reader state
+values.  That meant that there could be only a single active file
+reader at a time, in the entire program.  With this change, we can
+create as many simultaneously used file readers as we want.
+
+5-virtualFn: Here we implement nextChar() in a way that would allow
+it to be overridden by a subclass.  This flexibility comes at 
+a performance cost, because we can no longer inline the code
+for nextChar().
+
+"make" builds all five, and then "make run" runs them all using
+time, which prints the amount of CPU time consumed.

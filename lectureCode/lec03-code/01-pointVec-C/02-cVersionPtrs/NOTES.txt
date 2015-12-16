@@ -1,0 +1,6 @@
+This version typedefs Point and Vector to be pointers to structs.
+That is, Points and Vectors act like references, just as in Java.
+
+The big downside of this is that the methods that create new Points/Vectors
+must malloc space for them, and that means that the caller must then
+remember to free that space (by calling the corresponding delete method).

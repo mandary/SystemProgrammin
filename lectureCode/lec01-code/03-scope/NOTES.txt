@@ -1,0 +1,12 @@
+The "scope" of a variable's name is the region of the source over
+which the use of that name indicates a reference to that variable.
+
+C has two primary kinds of scope, global and local.  Global means
+that the name can have meaning everywhere in the program.  Local
+means the name has meaning from the point of declaration to the 
+end of the most enclosing set of braces containing the declaration.
+
+In our example, main.c, we have two different variables named x.
+One has scope that is the procedure main.  The other has scope
+that is the block of code in braces within main.
+

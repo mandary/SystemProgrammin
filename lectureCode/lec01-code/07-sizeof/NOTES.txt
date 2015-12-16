@@ -1,0 +1,14 @@
+sizeof is a compile time operator that "returns" the number
+of bytes of memory allocated for a type.  It takes a single
+argument, a type name.  It can also be given an expression,
+in which case it gives the number of byes required by 
+the type of the result of the expression.  (It does not
+evaluate the expression, it evaluates only the type of
+the expression.)
+
+sizeof is essential for malloc, which requires you to tell
+it how many bytes you want to allocate.
+
+(There's an exception to the rule above.  If sizeof is 
+applied to a variable length array, then it is evaluated
+at runtime.)

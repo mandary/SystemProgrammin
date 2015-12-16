@@ -1,0 +1,22 @@
+C gives you some control over both scope and the
+region of memory a variable is allocated in beyond
+the simple "within a procedure is local and not in any procedure
+is global" rule.
+
+* If you prefix a local variable declaration with "static",
+  it means allocate in the static data area, not on the stack.
+  That variable therefore retains its value across procedure
+  invocations, and all invocations share the same variable.
+
+  This use of "static" affects where memory is allocated.
+
+* If you prefix a global variable declaration with "static"
+  it means the scope of the variable's name is rest of this
+  file.  It cannot be referred to from another file.
+
+  This use of static affects scope.
+
+* By default, all funtion names are global.  However, if you prefix
+  a function definition with "static" it means the scope of that
+  name is the rest of the file.  It therefore cannot be invoked 
+  from code in any other file.

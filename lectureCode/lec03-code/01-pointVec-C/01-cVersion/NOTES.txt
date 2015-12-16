@@ -1,0 +1,11 @@
+This version uses structs to for the data representation
+of Point and Vector "objects."  Structs are passed and
+returned by value, which means the methods that new objects
+can simply create ones on the stack and return them.
+
+On the other hand, sometimes we want call-by-reference semantics,
+and in that case the programmer has to remember to pass a pointer.
+That isn't very Java-like, so the next version makes a Point 
+a pointer to a structure (and similarly for a Vector).  With
+that change, when you pass a Point or Vector to a subroutine
+the semantics are what you're used to in Java.

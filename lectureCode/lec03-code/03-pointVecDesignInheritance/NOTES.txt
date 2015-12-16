@@ -1,0 +1,63 @@
+In this version we want to support (what C++ calls) "virtual
+functions" - functions that can be overridden by subclasses.  Virtual
+functions are "dynamically dispatched" -- when you say (in Java)
+myObj.foo() you invoke the foo() defined by myObj's class, or its
+closest ancestor class if it doesn't define foo() itself.  This
+contrasts with static dispatching, which means that you can determine
+exactly which method will be invoked by looking at the call, without
+needing to run the code.  
+
+It turns out that we can achieve the effect of dynamic dispatching in
+C, but that doing so requires so much mechanism/typing that it's very
+unlikely any real C programmer would choose to do so fully in a real
+application.  Our example implementation is more full than usual,
+but still isn't complete -- we don't handle the concept of 'super,'
+for instance.  It does give you the essential ideas, though.
+
+The key to virtual functions are vtables, which are (in our
+implementation) structures containing function pointers.  Instead of
+directly calling toString(), client code calls the function pointed at
+by the toString member of the object's vtable.  When the object was
+constructed, it's vtable was initialized to point at the proper
+toString() implementation.
+
+Notice in this code that a pointer to a vtable has been added
+to the struct representing each class.  The vtable is essentially
+a hidden instance variable - it must be first in the structs
+of all classes (or at least in some fixed position).  The vtable
+itself uses the same trick for methods that the classs' structs
+have used up to now -- the vtable for a parent class is replicated
+as the prefix of the vtable for a derived class.
+
+Each object points at a vtable appropriate for it.  vtables "belong
+to" classes, though -- there is just one vtable for Point, for
+instance, and all instances of Point would point their vtable pointer
+at it.
+
+Because we get no help at all from the compiler in building
+the class hierarchy, invoking a possibly overridden method is
+a bit awkward: the caller must follow the pointer to the object
+to get the pointer to vtable, then follow that pointer to get
+the field of the vtable that holds the function pointer for
+the function it wants to invoke, then invoke it.  Look in App.c
+for invocations.
+=======
+implementation) structures containing function pointers.  Given
+that we're programming in C, we achieve dynamic method dispatching
+by doing two things:
+1. the implementer of the class initializes a vtable so that its
+   members point to the implementations of the methods that class
+   overrides.  (If the class does not override a method, then the
+   vtable entry for that method is initialized to point at the parent's
+   implementation.  Note: we do not implement that idea in our example,
+   but could.)
+2. the implementer of the client code understands that if a method is
+   virtual, it must be invoked through the vtable. Thus, calling code
+   invokes virtual methods in a manner similar to this:
+         myPoint->vtable->toString(myPoint)
+   (rather than something like point_toString(myPoint)).
+
+Note that the vtables "belong to" the class, not to objects.  We instantiate
+the vtable for a class in its .c file, as a statically allocated variable.
+When a new instance is created, we point its vtable pointer at the lone
+vtable defined for the class.   

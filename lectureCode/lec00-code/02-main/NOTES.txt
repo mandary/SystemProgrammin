@@ -1,0 +1,22 @@
+Here we first try to compile -- success! -- and then to
+build -- failure!
+
+Compile succeeds because the C compiler knows what instructions
+to generate for the calls to func0() and func3(), assuming that
+the calls in main.c are correct.  From the calls it knows the
+number and types of the arguments.  It assumes the return type
+is int, because that's the default.  It cannot verify that the
+calls are correct, but C doens't care about verifying.  C assumes
+you know what you're doing.  (Why would you try to compile an
+invocation passing two arguments if the function takes three?
+Either you wouldn't, or else you have a very good reason I don't
+understand, but either way I'll do what you asked.)
+
+While compiling succeeds, building fails.  It fails at the "link
+step," which tries to match each call to a function that is part
+of the code that composes the executable.  Here main invokes
+func0() and func3(), but there is no code that defines func0()
+or func3() given as part of the code to use to compose the
+executable.  (That is, C won't go looking for code to put
+together into to the executable, you have to tell it what 
+code to use.)

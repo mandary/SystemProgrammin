@@ -1,0 +1,125 @@
+(Static) Polymorphism
+---------------------
+
+Polymorphism is the property that a single method name may be
+defined multiple times, each time with a new type.  For instance,
+in Java it is reasonably common to have multiple constructors.
+For instance, one constructor may take no arguments while another
+takes an integer.
+
+C does not support polymophism -- a single method name can have
+only one definition.  There is a convention that is sometimes used
+to achieve the same effect though: the programmer suffixes the
+types of the arguments to create a unique method name.  For instance,
+instead of the following, which uses polymophism and so isn't legal
+C:
+   int foo();
+   int foo(int x);
+
+the programmer might create:
+
+   int foo();
+   int foo_int(int x);
+
+With compiler-supported polymophism a call might be written simply
+as
+    foo(2);
+
+With the convention, you might write
+
+    foo_int(2);
+
+Notice that in both cases it is possible to determine which method 
+definition you want "statically," that is, at code time.  With
+polymorphism, the compiler sees that a single, int argument is being
+passed to foo, and tries to find a definition that matches that.
+In the C convention, the programmer sees that a single int argument
+is being passed to foo, and finds a definition that matches that.
+
+
+Generics
+--------
+
+Generics are methods that operate correctly on arguments of multiple
+types.  HW1 was all about implementing generic linked lists and hash
+maps.
+
+There are two basic approaches to generics.  The first is to use
+"the lowest common denominator type" as the type of the arguments.
+This approach does not require any special compiler/language support.
+
+In Java, the lowest common denominator type is Object,
+so we might define a function "contains" like this:
+
+    boolean contains(Object o) { ...}
+
+That would let the client code pass in any object (but not an int
+or a char or other scalars).
+
+In C, void* is considered the lowest common denominator type.  
+A void* used in this way may be a pointer, but it might also
+be any scalar quantity that fits in 8 bytes.  (C programmers
+are used to that.)  So, if we have
+
+    int contains(void* vp) {...}
+
+the client code might be something like
+
+    int r = contains(&i);
+
+or it might be
+
+    int r = contains((void*)i)
+
+(where i is an int).
+
+The second technique (sometimes called parametric polymorphism,
+generally, and called generics in Java and templates in C++) requires
+compiler support.  We write a block of code that takes as an argument
+one or more type values.  When the client wants to use that code,
+it supplies a type argument, and the compiler (essentially) generates
+a type-specific version of the code using the supplied arguments and
+compiles it.
+
+In Java, for instance, you might say:
+
+   HashMap<Integer, String> map = new HashMap<Integer,String>;
+
+In C, there is no explicit support for this, but the preprocessor
+can be used to achieve something very similar.  (You'd have to
+be a bit nuts to do that, though.)  There's an example of doing
+this is the lecture code.
+
+Lecture Code
+------------
+
+The lecture code implements a simple linked list
+using both approaches shown above.  The mainline
+creates two linked lists, one to hold ints and 
+one to hold strings.  Directory "voidStar" uses
+the lowest common denominator approach.  Directory
+"preProc" uses the template approach, implemented
+via the preprocessor.
+
+Note that the preprocessor version has a gotcha
+(that is eliminated by template support in C++).
+The issue is that code to define the linked list
+implementation for, say, int's has to be created
+and compiled, but it can be created and compiled
+in only one source file.  The example llist.h
+file defines a single macro that is the generic
+linked list implementation specialized to the 
+supplied types.  The mainline then invokes that
+macro to create an int and a char* linked list.
+The problem is that if some other file were to
+also invoke that macro, there'd be two definitions
+of the specialized implementations, and the linker
+would complain.  The solution to this problem is
+for the .h file to define two macros -- one that 
+expands into prototype declarations only, and one
+that expands into function defintions.  All
+files using a linked list would invoke the macro 
+that expands to prototypes.  Only one file (often 
+main.c) would invoke the macro that expands to
+definitions.
+

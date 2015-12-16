@@ -1,0 +1,23 @@
+sscanf() is an example of a function with out parameters.
+The function reads tokens from a character string and
+converts them to internal representation according to
+the types given in a format string -- it does the 
+oppositve of what printf() does.  
+
+sscanf() needs out parameters for two reasons:
+(1) it may need to return more than one value.
+    The format string may indicate that any
+    number of consecutive tokens should be converted
+    and their values returned.
+(2) even if only a single token is being converted,
+    there needs to be some way to indicate success
+    or failure.  C programmers use return codes,
+    as C doesn't have exceptions.
+
+Because C is purely call-by-value, the only way to 
+get a value out via a parameter is for the parameter
+to be a pointer.  The value of the pointer argument is
+copied on the call.  Both the caller's pointer and the
+callee's parameter pointer point to the same memory.
+When the callee writes to that memory, the caller
+can find the value written there on return.

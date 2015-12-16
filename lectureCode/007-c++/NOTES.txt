@@ -1,0 +1,108 @@
+Overview
+--------
+
+You can simply start to learn C++ as a new language,
+similar in many ways to C, but it might help to keep
+in mind that C++ is trying to improve on some deficiencies
+of C, while maintaining C's strong points: performance,
+a large amount of existing library code, and low-level
+access to machine resources (in particular, memory).
+
+At the same time, C++ cannot stray far from the general
+assumptions of C.  A C++ program must be able to use
+existing C code (e.g., call library functions written in C),
+and in fact historically it has been the case that C++
+guarantees that every legal C program is a legal C++ program.
+
+Let's look at some general issues and how they're handled in
+C and C++:
+
+Memory management: C has user managed memory (malloc and free).
+C++ has user managed memory (new and delete).  C++ has
+constructors, like in Java, which makes it harder to forget
+to initialize allocated memory. It also has destructors.
+
+Naming: C has a flat name space for globals.  It's not
+all that uncommon to have a global variable name or
+method name in your code conflict with the use of that
+same name in some library you're using.  C++ has a
+hierarchical name space (much like Java), making it
+easy to avoid name conflicts.
+
+Modularity:  C++ has classes, which helps think about 
+appropriate abstractions, helps organize the code into 
+files in a sensible way, and promotes code reuse. 
+A C application has, at best, some conventions that the
+implementers follow (e.g., like the method naming 
+conventions in HW1).
+
+Encapsulation:  C doesn't really intend to give the 
+programmer a way to hide the implementation from other
+code (although it is sometimes possible to do that
+by using "opaque pointers").  C++ supports the 
+idea of public, protected, and private, as in Java.
+
+Generics: C uses void*, which requires that the programmer
+make sure that casts back out of the void* are correct.
+C++ uses templates, which are like Java generics, so that
+the programmer can write compiler type-checked, generic 
+code.
+
+Polymorphism:  Polymorphism allows a single name to refer
+to more than one implementation.  For instance, there
+might be multiple implementations of a method called "add."
+C doesn't support polymorphism (but it's a common practice
+to fake it in the style of HT_add() and LL_add()).
+C++ supports both static and dynamic polymorphism.
+With static polymorphism, the call myObj->add(foo)
+invokes a copy of add() that is chosen based on
+the declared type of myObj.  With dynamic, the copy
+chosen is based on the actual type of myObj.  (Dynamic
+uses vtables, static does not.)
+
+Error handling:  C has return codes.  It can be quite
+difficult to write code that deals with errors that 
+occur many subroutine calls deep.  C++ has exceptions
+(and try...catch and throw).
+
+
+C code example
+--------------
+
+Have a look at the code for today.  It should
+look pretty familiar, based on what you know
+about Java and C.  There are some "odd" things
+going on, though.
+
+Primary among them is how C++'s stream IO
+is implemented.  We have this statement in
+exampleMain.cc:
+
+  std::cout << "Alice's weight: " << alice.getWeight() << std::endl;
+
+std::cout is the C++ analog to stdout.  cout is an
+ostream variable, in the name space "std".  (The :: operator
+is name hierarchy resolution, like '.' in java.)
+std::endl is basically "\n".
+
+It should be clear what this line prints.  What isn't
+clear is how it does it.  It turns out that C++
+allows you to create methods that are called by
+writing what looks to be an operator.  In particular,
+
+    std::cout << "foo";
+
+is invoking the method ostream::<< on cout, passing it 
+the argument "foo."
+
+This is called operator overloading.  It is very
+commonly used to define a '<<' method (for reasons
+we'll see), but unless your application naturally
+defines a binary infix notation, you're generally
+advised to keep far away from it.  (E.g., a point/vector
+package might define a '+' method, so programmers
+can write "pointP + vecV" rather than pointP->addVec(vecV)".)
+
+
+
+

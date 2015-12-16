@@ -1,0 +1,15 @@
+It is always a bug to return a pointer to a local variable.
+The memory the local variable occupies is on the stack, and
+on function return that memory is avilable to be used for
+some other purpose.  Therefore, the its contents can change
+(in what seem like unpredicatable and impossible ways).
+
+main.c goes out of its way to illustrate this bug.
+It calls a function on each of its command line 
+arguments.  On return, it prints the modified
+argument. That seems to work.  However, if we print
+the arguments again, their values have changed, even
+though the source code doesn't have statement that
+look as though they modify them.  They change because
+the invocation of printf causes the memory pointed
+at by the vaue returned by upperify to be overwritten.

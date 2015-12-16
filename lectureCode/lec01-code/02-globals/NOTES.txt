@@ -1,0 +1,16 @@
+Here we have an example of allocating memory in the static data area.
+In C, any global variable is allocated in the static data area.  A
+variable is global if it is declared outside of any function.
+
+In our example, main.c defines a global variable, globalInt.  func.c
+declares the variable.  If you look at the generated assembler, you'll
+see that
+
+If you look at main.s you can see that it includes directives that
+reserve 4 bytes of global space and initialize it (the ".long 1345"
+statement).  If you look in func.s you'll see it just says that there
+should be some global symbol, globalInt, but that it isn't itself
+trying to reserve space for it.
+
+Being in the static data area, at run time the global variables are
+created and initialized before any statements of the program execute.

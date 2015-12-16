@@ -1,0 +1,23 @@
+The  point of  .h files  is very  hard for  the programmer  to make  a
+mistake that allows  the kind of type checking the  C compiler does to
+succeed when there is in fact an error.  We do that by having just one
+line of code that is the declaration  of the function.  It goes in the
+.h  file.  We  #include  that file  in  both every  file  that has  an
+invocation of the function and the file that defines the function.  If
+the function delcaration  in the .h matches the  actual function, then
+any call that  doesn't match the declaration will raise  an error.  If
+the declaration doesnt' match, then  the compilation of the function's
+definition will raise an error.  So, while the compiler still believes
+whatever  the  declaration  says  without  verifying  it  against  the
+function definition, it's extremely unlikely a simple programmer error
+will all a build when calls don't match function definitions.
+
+NOTE: The preprocessor is run before the compiler examines your code.
+The preprocessor looks for lines with '#' in the first column.  Those
+are commands to it.  Any line that isn't a command to it is simply
+written to its output.  The #include directive says "go get the file
+named and write its contents to your output"  -- it inserts the named
+file into the source file at that point.  The compiler takes the
+preprocessor's output as its own input.  It can't tell the difference
+between the programmer typing lines directly into the .c file and 
+getting them into the source code by #include'ing them.

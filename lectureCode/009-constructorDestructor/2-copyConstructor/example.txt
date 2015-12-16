@@ -1,0 +1,45 @@
+Example(const char*) constructor [0: strPtr = 0x1f88040 -> 'local']
+Example(const char*) constructor [1: strPtr = 0x1f88080 -> 'new'ed object']
+Example copy constructor [2: strPtr = 0x1f880a0 -> 'local']
+
+===> Call sub() then initialize
+Example copy constructor [3: strPtr = 0x1f880c0 -> 'local']
+Example copy constructor [4: strPtr = 0x1f880e0 -> 'local']
+Example copy constructor [5: strPtr = 0x1f88100 -> 'local']
+   Example destructor[4: strPtr = 0x1f880e0 -> 'local'])
+   Example destructor[3: strPtr = 0x1f880c0 -> 'local'])
+returnedVal = [5: strPtr = 0x1f88100 -> 'local']
+
+===> Call sub() then assign
+Example copy constructor [6: strPtr = 0x1f880c0 -> 'local']
+Example copy constructor [7: strPtr = 0x1f880e0 -> 'local']
+operator=([7: strPtr = 0x1f880e0 -> 'local'])
+   Example destructor[7: strPtr = 0x1f880e0 -> 'local'])
+   Example destructor[6: strPtr = 0x1f880c0 -> 'local'])
+
+===> Evaluate expression
+operator+: [0: strPtr = 0x1f88040 -> 'local'] + [1: strPtr = 0x1f88080 -> 'new'ed object']
+Example copy constructor [8: strPtr = 0x1f88140 -> 'local']
+Example copy constructor [9: strPtr = 0x1f88140 -> 'localnew'ed object']
+   Example destructor[8: strPtr = 0x1f880c0 -> 'localnew'ed object'])
+operator+: [9: strPtr = 0x1f88140 -> 'localnew'ed object'] + [2: strPtr = 0x1f880a0 -> 'local']
+Example copy constructor [10: strPtr = 0x1f88160 -> 'localnew'ed object']
+Example copy constructor [11: strPtr = 0x1f88160 -> 'localnew'ed objectlocal']
+   Example destructor[10: strPtr = 0x1f88180 -> 'localnew'ed objectlocal'])
+operator+: [11: strPtr = 0x1f88160 -> 'localnew'ed objectlocal'] + [5: strPtr = 0x1f88120 -> 'local']
+Example copy constructor [12: strPtr = 0x1f88180 -> 'localnew'ed objectlocal']
+Example copy constructor [13: strPtr = 0x1f881d0 -> 'localnew'ed objectlocallocal']
+   Example destructor[12: strPtr = 0x1f881a0 -> 'localnew'ed objectlocallocal'])
+Example copy constructor [14: strPtr = 0x1f881a0 -> 'localnew'ed objectlocallocal']
+   Example destructor[13: strPtr = 0x1f881d0 -> 'localnew'ed objectlocallocal'])
+   Example destructor[11: strPtr = 0x1f88160 -> 'localnew'ed objectlocal'])
+   Example destructor[9: strPtr = 0x1f88140 -> 'localnew'ed object'])
+
+===> delete pExample
+   Example destructor[1: strPtr = 0x1f88080 -> 'new'ed object'])
+
+===> return from main
+   Example destructor[14: strPtr = 0x1f881a0 -> 'localnew'ed objectlocallocal'])
+   Example destructor[5: strPtr = 0x1f88120 -> 'local'])
+   Example destructor[2: strPtr = 0x1f880a0 -> 'local'])
+   Example destructor[0: strPtr = 0x1f88040 -> 'local'])

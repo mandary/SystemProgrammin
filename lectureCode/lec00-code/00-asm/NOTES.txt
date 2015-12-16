@@ -1,0 +1,33 @@
+It will be tempting to think of C as an alternative to Java.  My
+advice is to resist that urge.  C is better thought of as an
+alternative to assembly language programming.
+
+This directory contains a simple assembler program.  To be successful,
+C must allow the programmer to specify the same things that s/he could
+in assembler, just more efficiently.  In the assembler file you'll
+find:
+
+* a sequence of instructions, put in the "text" segment of memory
+* the code that implements the "linkage convention" for entering
+  a subroutine (named "main," in this case)
+* a string literal, allocated in the static data segment (region
+  of memory)
+* use of the stack to allocate local variables
+* use of registers for operating on values
+
+All of these have direct counterparts in a C program -- instructions,
+subroutine definitions, literals, and local variable declarations.
+The last one, register usage, is something that C originally allowed
+the programmer to have some direct input on, but these days the
+compiler is so good at allocating registers that anything a human has
+to say isn't worth listening to (and so the mechanism for talking
+about registers in a C program is at least deprecated).
+
+As you think about C, imagine the programmer who is used to writing
+code like main.s.  C is trying to make their life easier.  It is NOT
+trying to do what Java does, and thinking about what Java does
+probably does a lot more harm than good.
+
+[Note: main.s was actually produced by compiling C/main.c with the
+-S switch, to get main.s, then editting main.s to remove some lines
+that are primarily intended for the linker and debugger.]

@@ -1,0 +1,14 @@
+Declaring an array reserves enough space to hold all the elements of the array.
+It also creates a symbol table entry for the array's name.  That entry 
+indicates the address of the array.  So, for many uses, the array name
+can be thought of as a pointer.  Unlike a pointer, though:
+
+- there is no space allocated to hold the pointer value associated
+  with the array name, and so
+- you cannot assign a new value to the array name
+
+
+In the example, the declartion of array causes 40 bytes to be reserved.
+The declaration of p causes 8 bytes to be reserved. So, while you can
+apply the indexing operation to any pointer (e..g, p[3]), allocating
+a pointer does ot allocate space for an array -- only for a pointer.

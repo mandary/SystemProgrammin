@@ -1,0 +1,23 @@
+C's "typedef" allows you to define new names for types.
+For instance, you might say
+
+   typedef int  Age_type;
+   typedef int  Weight_type;
+
+and then declare variables
+
+   Age_type    age;
+   Weight_type weight;
+
+age and weight are int's, but you now have a symbolic name for the abstract
+types that distinguishes them from int's: if you want to make weights float
+values, for instance, you just change the typedef.  If you had simply declared
+everything to be an int, you'd have to search through your code figuring out
+which int's should change to float and which should remain int.
+
+typedef is extremely useful with struct's.  C uses "name equivalence" (rather
+than "structural equivalence") to decide whether two struct variables are the
+same type.  That is, it wants the string names of their types to be the same.
+It doesn't care that they have the same types of fields, that's not enough.
+typedef lets you give a name to a struct type. You can then use that name for
+all variables that are instances of that type.

@@ -1,0 +1,15 @@
+This example shows how the base type of a pointer is
+used by the compiler.
+
+1.  Some of its usual type checking is affected by the base
+    type of the pointer.  *p has the base type of p.  p is
+    a pointer to a base type value, and int* and float* are
+    not the same type.
+
+2.  The value of p+3 depends on the base type of p.  In particular,
+    the implementation of pointers are that they have the address
+    of a byte.  If p is an int*, that means p+3 is 12 larger than
+    p (since each int is 4 bytes).  If p is a double*, p+3 is 
+    24 larger than p (because a double is 8 bytes).
+
+(It also shows that the symbol "main" is a pointer.)

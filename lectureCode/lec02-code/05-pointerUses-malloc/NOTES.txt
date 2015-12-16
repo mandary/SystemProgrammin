@@ -1,0 +1,15 @@
+malloc() and calloc() return pointers to allocated memory,
+or NULL on failure.  The memory so allocated remains allocated
+until the process calls free() on it.  If you forget to
+call free, or simply have a bug, you create a "memory leak."
+If you leak enough memory you will run out.  Most programs
+die when that happens.
+
+It is important to note that C lets you name the memory
+that are the 8 bytes reserved to hold the current value
+of a pointer, and it lets you separately name the memory
+the pointer points at.  For
+
+int *p;
+
+you say "p" and "*p" to mean those two things, respectively.

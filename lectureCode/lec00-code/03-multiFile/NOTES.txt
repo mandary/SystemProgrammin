@@ -1,0 +1,19 @@
+Here both main.c and func.c are in the same directory.
+The point is, that's completely useless, on its own.
+C will not look for code when trying to create an
+executable, even in the same directory.  Either you
+mention it explicitly or it's not found (and the
+program "won't link.")
+
+build.sh first compiles main.c and func.c.  Both succeed,
+for the usual reasons.
+
+It then tries to build, but mentions only main.c.  This
+fails, because there is no definition of func0() or func3()
+given to the linker.
+
+It then builds mentioning both main.c and func.c.  Those
+files are compiled and then assembled and then given to
+the linker.  The linker sees that main needs func0 and func3.
+It finds func0 and func3.  Everyone is happy.
+

@@ -1,0 +1,30 @@
+(To make the example more interesting, we introduce scale()
+and length() methods to the Vector class, so that it has methods
+and instance variables that Tuple doesn't.)
+
+This version implements Point and Vector as subclasses of Tuple.  To
+be a subclass means simply that whenever code is expecting a Tuple,
+the programmer can pass in a Point or a Vector and everything
+works as expected.  We achieve that, in C, by making sure that the
+initial portion of a subclass's struct is identical to the struct
+of its parent class.  That is, since Tuple's struct is two doubles,
+Point's and Vector's structs must start with those same two doubles.
+Given what it thinks is a pointer to a Tuple, any correct code will
+touch only the two doubles that immediately follow it.  So a Vector,
+say, is a Tuple, as far as that code can tell.  That there additional
+fields beyond the two doubles in a Vector instance is irrelevant
+to (correct) code that acts on Tuples.
+
+The subclassing idea isn't very evident in the code, but you
+can see it in point_addVector().  It casts a Point and a Vector
+to Tuples, and then invokes a Tuple add method on them.
+
+While we have a form of subclassing in this example, all method 
+dispatching is determined statically -- it must be known at 
+code time exactly which method will be invoked, since:
+- the programmer has to type the name of the method she wants invoked
+  into the code, and
+- in C, there can be only one method with any given name
+The next step is to implement dynamic method dispatching.
+
+

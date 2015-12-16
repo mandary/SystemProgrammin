@@ -1,0 +1,17 @@
+It is sometimes useful when debugging to be familiar with the which
+pointer values are typically to the static data area, which to the
+heap, and which to the stack.  This example shows some typical values.
+(The basic idea is that "big" means stack and "small" means static and
+"in between" means heap.)
+
+It also shows that both main.c and sub.c agree where in memory
+globalInt has been allocated.  The compiler cannot figure out what
+that location will be when compiling each file individually -- it's
+above the instructions for main and the instructions for sub and it
+has no idea how much space those will take together when it's
+compiling either one individually (among other problems it would have
+trying to figure out where globalInt will be allocated).  The linker
+eventually lays out all the instructions (main and sub) and all the
+globals (globalInt) and other static data (the string literal).  It
+then knows where they are all allocated and can "patch" machine
+instructions that needed those addresses.

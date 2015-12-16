@@ -1,0 +1,33 @@
+For the moment, at least, we'll use the term "compile"
+to mean the process of translating from the input 
+lanuage to the output language.  For these examples,
+the input language is C and the output language
+is assembler.  We'll use "build" to mean going from
+one or more files in the input language (C) to 
+an executable.
+
+This directory shows that compiling can happen even
+when building cannot.  There is a single soure file,
+func.c.  It contains subroutines, but there is no
+main().  The script build.sh (invoked as ./build.sh)
+will ask the compiler to translate func.c into
+assembler.
+
+Two things to note:
+
+* Most importantly, the C compiler can do the translation.
+  The definition of the functions tell it how many arguments
+  are expected and what their types are, and it generates code
+  assuming the functions will be called correctly.
+
+* Secondly, 351 probably tried to explain that a line of 
+  C translates very directly to some lines of assembler.
+  In fact, all that's necessary is that the assembler program
+  have the behavior that is specified by the C program.
+  There are an infinite number of assembler programs that
+  meet that criterion.  Some execute more efficiently than others.
+  build.sh compiles first without compiler optimization and then
+  will aggressive compiler optimization.  Comparing the two
+  assembler files produced you'll see what optimizations have
+  been applied, and you can verify that the very un-351-like
+  assembler code in fact computes what the C program specified.

@@ -1,0 +1,9 @@
+In C, all arguments are passed by value. All of them.
+
+If the argument is a pointer, its value (i.e., the address it contains) is
+passwed by value.  That means that:
+(a) you cannot change in the function what the caller's pointer is pointing at,
+    since you're operating on a copy of the pointer
+(b) but you can change the memory pointed at by your copy of the pointer,
+    because it's the same memory that the caller's pointer is pointing at
+

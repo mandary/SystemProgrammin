@@ -1,0 +1,7 @@
+main.c takes a single argument, an address (in decimal).
+It then tries to fetch the byte at the address.
+
+Mostly, you get a seg fault, indicating that there is no such
+address (in the virtual address space).
+
+If the address exists, you may or may not be able to write it.

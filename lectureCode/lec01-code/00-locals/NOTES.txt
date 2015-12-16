@@ -1,0 +1,31 @@
+Remember that our view of C is that it provides a more convenient way
+for the assembly language programmer to write the programs s/he is
+accustomed to.  The examples in this section concentrate on the use of
+memory, i.e., variables.
+
+The operating system provides three kinds of memory for holding
+variables: the stack, the static data area, and the heap.  C provides
+a number of ways of asking for memory allocation in these regions.
+You know from 451 that the heap is allocated using malloc().  We'll
+get to that later in the course.  For now, we're interested in the
+stack and the static data area.
+
+In this section we see two of the ways to ask for
+stack memory to be allocated.  One is to declare local variables.
+For example, the declarations of localInt_0 and localInt_1
+in intFunc() cause C to generate code to move the stack pointer
+far enough to allocate space for those two variables.
+
+The second way to allocate stack memory is to declare parameters.
+Parameters are essentially a special kind of local variable - ones
+initialized with values taken from the calling statement.
+
+When the compiler translates your C program, it will generate code
+to allocate space for these variables on the stack.  It will also remember
+that the "name" of the variable at runtime is some offset inside the
+stack frame (taken as an offset from %rbp).  That's the thing
+the compiler needs to know in order to generate code for a statement
+that uses a variable -- how do I refer to that variable in assembler?
+Assembler doesn't care about types, and so to the extent that C cares
+about types, type checking is something done by the compiler, not during
+execution.

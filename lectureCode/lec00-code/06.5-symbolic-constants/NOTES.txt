@@ -1,0 +1,12 @@
+#define is another proprocessor directive.  For 
+example,
+
+#define MINUS_ONE -1
+
+That says (to the preprocessor), every time you see
+the string "MINUS_ONE" in a line of text you're about
+to write to your output, substitute the string "-1" for
+it.
+
+#include is most often used to get the effect of symbolic
+constants -- giving a name to a value.  

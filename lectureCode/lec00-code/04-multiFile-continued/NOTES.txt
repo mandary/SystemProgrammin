@@ -1,0 +1,28 @@
+Here we enhance main.c by having it print the
+results of calling func0 and func3.
+
+Building the app, we get some kind of warning about
+printf.  By the end of the examples in this section
+you should be able to explain what the warning is about.
+For now, it's enough to note that it's just a warning --
+an executable (a.out) is successfully built.
+
+When you run the executable, though, you get "incorrect"
+results.  func0 and func3 are both max() functions, but
+func3 isn't acting like one.  (In fact, if you run the
+executable over and over you might see different results.)
+
+The problem is that when compiling main, the compiler doesn't
+know what the type of func3() is, because it has no way to
+locate func3() and determine its type.  C has some default
+types.  In this case it assumes func3 takes int arguments and
+returns an int.  It generates code that is correct for calling
+a function of that default type.  Since func3 is not of that
+type, the invoking code isn't correct for invoking the actual
+func3.  Thus the crazy results.
+
+The goal now is to cause compiler to do some useful type
+checking that makes it at least likely that the function type
+assumed in the caller is the same as the actual type of the
+function in its definition.
+

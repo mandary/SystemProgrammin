@@ -1,0 +1,9 @@
+C supports pointers to variables and pointers to code.
+Code pointers must point at functions.  Functions have
+types.  You declare a function pointer for a function
+that takes no arguments and returns nothing like this:
+
+void (*pFunc)();
+
+The function pointer, pFunc, is a pointer.  It has been
+reserved 8 bytes of memory.  It can be assigned to.

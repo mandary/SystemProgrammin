@@ -1,0 +1,17 @@
+In this example we add >>> declarations << to main.c
+for func0 and func3.  (A declaration says what the type
+of the function is.  A definition additional gives the
+implementation of (code for) the function.)  After seeing
+the function declarations at the top of main.c, the
+C compiler will make sure that every invocation of those
+functions it sees >>> later in that file << conform to
+those declarations.  If so, it generates code for them.
+If not, it raises an error.  (Or maybe it rasises a warning,
+depending on just what the mismatch is.)
+
+NOTE that the compiler is checking the type of the call against
+the type of the declaration.  The declaration is not the 
+definition, so it is not guaranteed that the call matches the
+actual functio.  In this example, it does not -- we've mis-declared
+func3.  Running the application, we get the same erroneous results
+as before -- the type checking was useless.

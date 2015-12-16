@@ -1,0 +1,24 @@
+"syntax" means how statements are written.
+"semantics" means what the statements mean.
+Syntax is considered a fairly trivial issue (to
+implement), whereas semantics can be non-trivial.
+When we get to C++, we'll see that it adds a lot of
+syntax, and also adds some new semantics.
+
+To give the flavor of syntax being trivial, we
+create some new syntax that we can use in C programs.
+We do it using something called "preprocessor macros."
+These are like preprocessor subroutines. They are
+versions of #define.  The one we use is this:
+
+#define unless(x) if ( !(x) )
+
+That says, "When you see unless(...)" in a line in the 
+input file, replace it with "if ( !(...) )" where
+the ellipses are whatever text was in the original line
+of code.
+
+unless.c #include's unless.h, which defines the unless
+macro. unless.c then uses the macro. The file compiles
+because the preprocessor translates from the non-C input
+unless line to the standard C if statement.

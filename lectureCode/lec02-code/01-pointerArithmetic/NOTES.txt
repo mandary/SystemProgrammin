@@ -1,0 +1,24 @@
+In this subdirectory we just have some examples of peering
+at pointers.
+
+firstExample.c shows the address of (&) and dereference (*)
+operators, and tries to make clear what they do.  It also
+tries to make clear the distinction between *p and p -- the
+thing p refers to and p itself, respectively.  Finally, it
+shows that array elements are laid out consecutively, so 
+that addresses related to arrays can be computed from the
+array index and the base address of the array.
+
+secondExample.c shows that pointer arithmetic is performed
+in units of the type that that the pointer points at.
+For example, p+3 means "3 of the things the pointer points at
+past where it points"
+
+secondExample.c also shows that C will not try to make 
+sure that the result of pointer arithmetic is a meaningful
+address.  C figures you know what you're doing.
+
+Finally, secondExample.c shows that bits in memory do not
+have a type.  It uses both an int* and a char* to examine
+the same bits, and that's both legal in C in actually has
+a well defined meaning.

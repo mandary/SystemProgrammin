@@ -1,0 +1,11 @@
+Here we have a slightly more complicated set of local variable
+declarations.  If you looks at the assembler that is generated, you'll
+see that the compiler has not laid out the local variables in memory
+in the same order they are declared in the C program.  It's allowed to
+lay them out in any order at all, since their layout in memory is not
+something specified by the C source code.  The compiler rearranges
+them because it wants to allocate "aligned memory" -- memory that is
+at an address that is a multiple of the length of the data item.  (For
+instance, a 4-byte int should be at an address that is a multiple of
+4.)  On many hardware systems aligned memory executes faster (than
+unaligned), and on some it is required.

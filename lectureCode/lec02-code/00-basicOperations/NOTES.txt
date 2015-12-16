@@ -1,0 +1,3 @@
+As you know from CSE 351, the basic pointer operations are "address
+of" (&) and dereference (*).
+
